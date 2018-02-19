@@ -1,7 +1,9 @@
+require "blockchain"
+
 require "bradfieldcoin/version"
 require "bradfieldcoin/pki"
 require "bradfieldcoin/transaction"
-require "blockchain"
+require "bradfieldcoin/coin"
 
 module BradfieldCoin
 end
