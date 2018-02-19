@@ -1,7 +1,14 @@
+GIT
+  remote: https://github.com/mdayaram/blockchain
+  revision: e3b10cf128f02ee595505eef87d308bf0584da80
+  specs:
+    blockchain (0.1.0)
+
 PATH
   remote: .
   specs:
     bradfieldcoin (0.1.0)
+      blockchain
 
 GEM
   remote: https://rubygems.org/
@@ -35,6 +42,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  blockchain!
   bradfieldcoin!
   bundler (~> 1.16)
   pry-byebug (~> 3.6.0)
