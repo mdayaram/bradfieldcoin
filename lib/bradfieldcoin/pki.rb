@@ -1,5 +1,6 @@
 require "openssl"
 require "base64"
+require "digest"
 
 module BradfieldCoin
   module PKI
@@ -9,14 +10,15 @@ module BradfieldCoin
     end
 
     def self.sign(message:, private_key:)
+      digested = Digest::SHA2.hexdigest(message)
       key = OpenSSL::PKey::RSA.new(private_key)
-      Base64.encode64(key.private_encrypt(message))
+      Base64.encode64(key.private_encrypt(digested))
     end
 
     def self.valid_signature?(message:, signature:, public_key:)
       key = OpenSSL::PKey::RSA.new(public_key)
       decrypted = key.public_decrypt(Base64.decode64(signature))
-      message == decrypted
+      Digest::SHA2.hexdigest(message) == decrypted
     end
   end
 end
