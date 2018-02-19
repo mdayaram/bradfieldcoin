@@ -9,8 +9,8 @@ module BradfieldCoin
       @blockchain = Blockchain::Blockchain.new(genesis_txn(starting_amount))
     end
 
-    def valid_chain?
-      blockchain.valid? && valid_transactions?
+    def valid?
+      is_given_chain_valid?(blockchain)
     end
 
     def transfer(to:, amount:)
@@ -28,12 +28,25 @@ module BradfieldCoin
       true
     end
 
+    # Consider the given blockchain with the fork choice rule
+    def consider(alt_blockchain)
+      return false if is_given_chain_valid?(alt_blockchain)
+      return false if alt_blockchain.blocks.size <= blockchain.blocks.size
+
+      @blockchain = alt_blockchain
+      true
+    end
+
     private
 
-    def valid_transactions?
+    def is_given_chain_valid?(chain)
+      chain.valid? && is_chains_txns_valid?(chain)
+    end
+
+    def is_chains_txns_valid?(chain)
       balances = Hash.new(0)
 
-      blockchain.blocks.each do |b|
+      chain.blocks.each do |b|
         txn = b.content
         return false if txn.amount <= 0
 
