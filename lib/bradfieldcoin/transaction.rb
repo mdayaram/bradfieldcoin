@@ -28,10 +28,10 @@ module BradfieldCoin
 
     def to_json
       {
-        from: from.to_s,
-        to: to.to_s,
+        from: from,
+        to: to,
         amount: amount.to_i,
-        signature: signature.to_s
+        signature: signature
       }
     end
 
