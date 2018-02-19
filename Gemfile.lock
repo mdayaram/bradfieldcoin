@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/mdayaram/blockchain
-  revision: 79cd9ce8879aaf5482bb91cdaeea68b050a0ba98
+  revision: be4789682259901ce5df503e4065835f814ecdd9
   specs:
     blockchain (0.1.0)
 
