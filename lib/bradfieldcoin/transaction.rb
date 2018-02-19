@@ -17,6 +17,15 @@ module BradfieldCoin
       PKI.valid_signature?(message: message, signature: signature, public_key: from)
     end
 
+    def ==(other)
+      return false if other.nil? || !is_a?(Transaction)
+
+      from == other.from &&
+        to == other.to &&
+        amount == other.amount &&
+        signature == other.signature
+    end
+
     def to_s
       [
         "From: #{from}",
