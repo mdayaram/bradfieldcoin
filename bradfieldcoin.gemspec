@@ -5,7 +5,7 @@ require "bradfieldcoin/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "bradfieldcoin"
-  spec.version       = Bradfieldcoin::VERSION
+  spec.version       = BradfieldCoin::VERSION
   spec.authors       = ["Manoj Dayaram"]
   spec.email         = ["m@noj.cc"]
 

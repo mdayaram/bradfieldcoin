@@ -1,6 +1,6 @@
-RSpec.describe Bradfieldcoin do
+RSpec.describe BradfieldCoin do
   it "has a version number" do
-    expect(Bradfieldcoin::VERSION).not_to be nil
+    expect(BradfieldCoin::VERSION).not_to be nil
   end
 
   it "does something useful" do

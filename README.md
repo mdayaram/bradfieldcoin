@@ -1,4 +1,4 @@
-# Bradfieldcoin
+# BradfieldCoin
 
 It's time now to build our first cryptocurrency!
 

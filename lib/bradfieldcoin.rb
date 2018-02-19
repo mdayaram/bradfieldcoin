@@ -1,5 +1,5 @@
 require "bradfieldcoin/version"
 
-module Bradfieldcoin
+module BradfieldCoin
   # Your code goes here...
 end
