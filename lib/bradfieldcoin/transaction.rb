@@ -5,27 +5,16 @@ module BradfieldCoin
     attr_reader :amount
     attr_reader :signature
 
-    def initialize(from:, to:, amount:, signature: nil, private_key: nil)
+    def initialize(from:, to:, amount:, private_key: nil)
       @from = from
       @to = to
       @amount = amount
-      @signature = signature
-
-      @signature = sign(private_key) if signature.nil?
+      @signature = sign(private_key)
     end
 
     def verified?
       return false if signature.nil?
       PKI.valid_signature?(message: message, signature: signature, public_key: from)
-    end
-
-    def to_json
-      {
-        from: from.to_s,
-        to: to.to_s,
-        amount: amount.to_i,
-        signature: signature
-      }
     end
 
     def to_s
@@ -35,6 +24,24 @@ module BradfieldCoin
        "Amount: #{amount}",
        "Signature: #{signature}"
       ].join("\n")
+    end
+
+    def to_json
+      {
+        from: from.to_s,
+        to: to.to_s,
+        amount: amount.to_i,
+        signature: signature.to_s
+      }
+    end
+
+    def self.from_json(json)
+      txn = Transaction.allocate # creates instance without calling new/initialize
+      txn.instance_variable_set(:@from, json[:from])
+      txn.instance_variable_set(:@to, json[:to])
+      txn.instance_variable_set(:@amount, json[:amount])
+      txn.instance_variable_set(:@signature, json[:signature])
+      txn
     end
 
     private
