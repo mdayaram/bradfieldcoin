@@ -48,7 +48,7 @@ module BradfieldCoin
 
       chain.blocks.each do |b|
         txn = b.content
-        return false if txn.amount <= 0
+        return false if !txn.valid?
 
         balances[txn.from] -= txn.amount if !txn.from.nil?
         balances[txn.to] += txn.amount

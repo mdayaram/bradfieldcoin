@@ -12,8 +12,10 @@ module BradfieldCoin
       @signature = sign(private_key)
     end
 
-    def verified?
+    def valid?
       return false if signature.nil?
+      return false if amount <= 0
+
       PKI.valid_signature?(message: message, signature: signature, public_key: from)
     end
 
