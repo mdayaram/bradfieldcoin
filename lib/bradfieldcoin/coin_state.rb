@@ -1,5 +1,8 @@
+require "digest"
+require "http"
+
 module BradfieldCoin
-  class Coin
+  class CoinState < GossipServer::WorldState
     attr_reader :blockchain
     attr_reader :private_key
     attr_reader :public_key
@@ -17,9 +20,11 @@ module BradfieldCoin
       return false if amount <= 0
       return false if get_balances[public_key] < amount
 
+      to_key = HTTP.get("#{peer_host(to)}/public_key").to_s
+
       txn = Transaction.new(
         from: public_key,
-        to: to,
+        to: to_key,
         amount: amount,
         private_key: private_key
       )
@@ -29,12 +34,25 @@ module BradfieldCoin
     end
 
     # Consider the given blockchain with the fork choice rule
-    def consider(alt_blockchain)
-      return false if is_given_chain_valid?(alt_blockchain)
+    def update_world_state(client_id:, payload:)
+      alt_blockchain = Blockchain::Blockchain.from_json(payload[:blockchain], Transaction)
+      return false if !is_given_chain_valid?(alt_blockchain)
       return false if alt_blockchain.blocks.size <= blockchain.blocks.size
 
       @blockchain = alt_blockchain
       true
+    end
+
+    def my_s
+      Digest::SHA2.hexdigest(public_key)
+    end
+
+    def to_s
+      blockchain.to_s
+    end
+
+    def to_json
+      { blockchain: blockchain.to_json }
     end
 
     private
@@ -77,6 +95,10 @@ module BradfieldCoin
         amount: amount,
         private_key: private_key
       )
+    end
+
+    def peer_host(peer_id)
+      "http://localhost:#{peer_id}"
     end
   end
 end

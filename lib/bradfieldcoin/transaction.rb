@@ -1,3 +1,5 @@
+require "digest"
+
 module BradfieldCoin
   class Transaction
     attr_reader :from
@@ -16,7 +18,8 @@ module BradfieldCoin
       return false if signature.nil?
       return false if amount <= 0
 
-      PKI.valid_signature?(message: message, signature: signature, public_key: from)
+      key = from.nil? ? to : from
+      PKI.valid_signature?(message: message, signature: signature, public_key: key)
     end
 
     def ==(other)
@@ -30,10 +33,10 @@ module BradfieldCoin
 
     def to_s
       [
-        "From: #{from}",
-       "To: #{to}",
-       "Amount: #{amount}",
-       "Signature: #{signature}"
+        "From: #{from.nil? ? "" : Digest::SHA2.hexdigest(from)}",
+        "To: #{Digest::SHA2.hexdigest(to)}",
+        "Amount: #{amount}",
+        "Signature: #{Digest::SHA2.hexdigest(signature)}"
       ].join("\n")
     end
 
